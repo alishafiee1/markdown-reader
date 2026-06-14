@@ -71,3 +71,5 @@ npm test
 ## نکته
 
 این repo عمداً **مستقل** است — بدون وابستگی به CMS یا پلتفرم ماژول. بسته‌بندی برای سایر پلتفرم‌ها در آینده با skill جدا انجام می‌شود.
+
+در monorepoٔ [DocForAi](https://github.com/alishafiee1/DocForAi) به‌صورت **git submodule** در مسیر `markdown-reader-module/` قرار دارد.
