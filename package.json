@@ -1,0 +1,19 @@
+{
+  "name": "markdown-reader",
+  "version": "1.0.0",
+  "description": "Standalone Persian RTL markdown library reader with SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/test_articles_api.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "marked": "15.0.7",
+    "multer": "1.4.5-lts.2",
+    "sql.js": "1.13.0"
+  }
+}
