@@ -175,7 +175,9 @@ async function open(docPath) {
       : null;
 
     const guestRecent = !progress ? JSON.parse(localStorage.getItem(GUEST_RECENT_KEY) || 'null') : null;
-    const ratio = progress?.scrollRatio ?? guestRecent?.docPath === docPath ? guestRecent.scrollRatio : 0;
+    const ratio =
+      progress?.scrollRatio ??
+      (guestRecent?.docPath === docPath ? guestRecent.scrollRatio : 0);
 
     requestAnimationFrame(() => {
       const scrollable = content.scrollHeight - content.clientHeight;

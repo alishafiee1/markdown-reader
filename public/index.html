@@ -1,63 +1,155 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>کتاب‌خوان مارک‌داون</title>
-    <link rel="stylesheet" href="./style.css">
-    <script src="./marked.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>کتابخانه BookShelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/reader-themes.css">
 </head>
-<body class="light">
+<body>
+  <div id="offlineBanner" class="offline-banner" hidden>اتصال قطع شد — وقتی برگشت، پیشرفت ذخیره می‌شود</div>
+  <div id="toast" class="toast" role="status"></div>
 
-    <header class="app-bar">
-        <div class="app-bar-right">
-            <button id="menuBtn" class="icon-btn" title="منو و تاریخچه">
-                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            </button>
-            <h1 id="appTitle">کتاب‌خوان مارک‌داون</h1>
+  <div id="app">
+    <section class="page welcome-page" data-page="welcome">
+      <div class="welcome-collage" aria-hidden="true">
+        <div class="mini-cover" style="background:#2563EB"></div>
+        <div class="mini-cover" style="background:#7C3AED"></div>
+        <div class="mini-cover" style="background:#059669"></div>
+      </div>
+      <h1>مطالبت را همین‌جا بخوان</h1>
+      <p style="color:var(--text-secondary);max-width:320px">کتابخانهٔ مارک‌داون با تم‌های مطالعه و ادامه از همان جا</p>
+      <button id="welcomeStartBtn" class="btn-primary" type="button">شروع کنیم</button>
+    </section>
+
+    <section class="page" data-page="home">
+      <header class="page-header">
+        <h1>کتابخانه</h1>
+        <p>بعدی چی می‌خوانی؟</p>
+      </header>
+      <div class="search-bar">
+        <span id="homeSearchIcon"></span>
+        <input id="homeSearchInput" type="search" placeholder="فانتزی، لینوکس، nginx…" autocomplete="off">
+      </div>
+      <div id="homeSearchResults" class="search-results" style="display:none"></div>
+      <div id="categoryPills" class="category-pills"></div>
+      <div id="continueSection">
+        <h2 class="section-title">ادامه بده</h2>
+        <div id="continueRow" class="continue-row"></div>
+      </div>
+    </section>
+
+    <section class="page" data-page="library">
+      <header class="page-header">
+        <h1>مرور کتابخانه</h1>
+      </header>
+      <nav id="libraryBreadcrumbs" class="breadcrumbs" aria-label="مسیر"></nav>
+      <div id="libraryGrid"></div>
+    </section>
+
+    <section class="page reader-page" data-page="reader">
+      <div class="reader-progress-top"><span id="readerScrollProgress"></span></div>
+      <header class="reader-topbar">
+        <button id="readerBackBtn" class="icon-btn" type="button" title="بازگشت"></button>
+        <h2 id="readerTitle">مطالعه</h2>
+        <button id="readerSearchToggle" class="icon-btn" type="button" title="جستجو"></button>
+        <button id="readerFullscreenBtn" class="icon-btn" type="button" title="تمام‌صفحه"></button>
+      </header>
+      <div id="readerSearchPanel" class="reader-search-panel">
+        <input id="readerSearchInput" type="search" placeholder="جستجو در این صفحه">
+        <span id="readerSearchCount"></span>
+        <button id="readerSearchPrev" class="btn-ghost" type="button">قبلی</button>
+        <button id="readerSearchNext" class="btn-ghost" type="button">بعدی</button>
+      </div>
+      <article id="readerCard" class="reader-card" data-theme="night" data-font="normal">
+        <div id="readerContent" class="reader-content"></div>
+      </article>
+      <footer class="reader-toolbar">
+        <div class="theme-dots">
+          <button class="theme-dot" data-theme="day" type="button" title="روشن"></button>
+          <button class="theme-dot" data-theme="sepia" type="button" title="کرم"></button>
+          <button class="theme-dot" data-theme="dim" type="button" title="خاکستری"></button>
+          <button class="theme-dot active" data-theme="night" type="button" title="شب"></button>
         </div>
-        <div class="app-bar-left">
-            <button id="directionToggleBtn" class="icon-btn" title="تغییر جهت متن">↔️</button>
-            <button id="themeToggleBtn" class="icon-btn" title="تغییر تم">🌓</button>
-            <button id="saveAsBtn" class="icon-btn" title="ذخیره به عنوان HTML" style="display: none;">💾</button>
+        <button id="fontSmallerBtn" class="btn-ghost" type="button">A</button>
+        <button id="fontLargerBtn" class="btn-ghost" type="button">A+</button>
+      </footer>
+    </section>
+
+    <section class="page" data-page="account">
+      <header class="page-header">
+        <h1>حساب کاربری</h1>
+      </header>
+      <div id="adminPasswordBanner" class="admin-banner" hidden>
+        شما با حساب پیش‌فرض admino وارد شده‌اید — لطفاً رمز عبور را در محیط واقعی عوض کنید.
+      </div>
+      <div id="accountLoggedOut">
+        <div id="loginPanel">
+          <form id="loginForm" class="account-form">
+            <label>نام کاربری<input name="username" required minlength="3" autocomplete="username"></label>
+            <label>رمز عبور<input name="password" type="password" required minlength="4" autocomplete="current-password"></label>
+            <p id="loginError" class="form-error"></p>
+            <button class="btn-primary" type="submit">ورود</button>
+          </form>
+          <button id="showRegisterBtn" class="btn-ghost" type="button">ثبت‌نام</button>
         </div>
-    </header>
-
-    <div id="drawerOverlay" class="drawer-overlay"></div>
-    <aside id="drawer" class="drawer">
-        <div class="drawer-header">
-            <h2>امکانات</h2>
-            <button id="closeMenuBtn" class="icon-btn">
-                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-            </button>
+        <div id="registerPanel" hidden>
+          <form id="registerForm" class="account-form">
+            <label>نام کاربری<input name="username" required minlength="3" autocomplete="username"></label>
+            <label>رمز عبور<input name="password" type="password" required minlength="4" autocomplete="new-password"></label>
+            <p id="registerError" class="form-error"></p>
+            <button class="btn-primary" type="submit">ثبت‌نام</button>
+          </form>
+          <button id="showLoginBtn" class="btn-ghost" type="button">ورود</button>
         </div>
+      </div>
+      <div id="accountLoggedIn" hidden>
+        <p>سلام، <strong id="accountUsername"></strong> (<span id="accountRole"></span>)</p>
+        <button id="logoutBtn" class="btn-ghost" type="button">خروج</button>
+      </div>
+    </section>
+  </div>
 
-        <div class="drawer-content">
-            <label class="upload-btn">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-                آپلود فایل جدید (.md)
-                <input type="file" id="mdFileInput" accept=".md,.txt">
-            </label>
+  <nav class="bottom-nav" aria-label="ناوبری اصلی">
+    <button type="button" data-nav="home" data-label="خانه"></button>
+    <button type="button" data-nav="library" data-label="کتابخانه"></button>
+    <button type="button" data-nav="continue" data-label="ادامه"></button>
+    <button type="button" data-nav="account" data-label="حساب"></button>
+  </nav>
 
-            <button id="syncBundleBtn" class="upload-btn" type="button" style="margin-top: 8px;">
-                🔄 بروزرسانی از پوشه content
-            </button>
-
-            <div class="history-section">
-                <h3>📚 کتابخانه (SQLite)</h3>
-                <div id="historyContainer" class="history-list"></div>
-            </div>
+  <div id="adminModal" class="modal-overlay">
+    <div class="modal" role="dialog" aria-labelledby="adminModalTitle">
+      <h3 id="adminModalTitle">ویرایش جلد</h3>
+      <div id="adminCoverPreview" style="margin-bottom:1rem"></div>
+      <form id="adminCoverForm">
+        <label>عنوان<input name="title" required></label>
+        <label>توضیح<textarea name="description" rows="2"></textarea></label>
+        <label>رنگ جلد<input name="coverColor" type="color" value="#2563EB"></label>
+        <label>تصویر جلد (حداکثر ۲MB)<input id="adminCoverFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+        <div class="modal-actions">
+          <button id="adminModalCancel" class="btn-ghost" type="button">انصراف</button>
+          <button class="btn-primary" type="submit">ذخیره</button>
         </div>
-    </aside>
+      </form>
+      <button id="adminModalClose" class="btn-ghost" type="button" style="margin-top:0.5rem;width:100%">بستن</button>
+    </div>
+  </div>
 
-    <main class="reading-container">
-        <div id="welcomeMessage" class="welcome-msg">
-            <svg viewBox="0 0 24 24" width="60" height="60" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-            <p>برای شروع، یک فایل مارک‌داون آپلود کنید یا از منو، مطالب ذخیره‌شده را انتخاب کنید.</p>
-        </div>
-        <article id="markdownOutput" class="markdown-body" style="display: none;"></article>
-    </main>
-
-    <script src="./app.js"></script>
+  <script src="./js/icons.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/router.js"></script>
+  <script src="./js/reader-search.js"></script>
+  <script src="./js/welcome.js"></script>
+  <script src="./js/home.js"></script>
+  <script src="./js/library.js"></script>
+  <script src="./js/reader.js"></script>
+  <script src="./js/account.js"></script>
+  <script src="./js/admin-cover-modal.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 </html>

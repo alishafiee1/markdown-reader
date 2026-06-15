@@ -53,7 +53,8 @@ async function saveMetadata(event) {
   }
 
   try {
-    await apiRequest(`/admin/books/${encodeURIComponent(currentDocPath)}`, {
+    const encodedPath = currentDocPath.split('/').map(encodeURIComponent).join('/');
+    await apiRequest(`/admin/books/${encodedPath}`, {
       method: 'PATCH',
       body: JSON.stringify({
         title: form.title.value,
@@ -79,7 +80,8 @@ async function uploadCover(event) {
   const formData = new FormData();
   formData.append('cover', file);
   try {
-    await apiRequest(`/admin/books/${encodeURIComponent(currentDocPath)}/cover`, {
+    const encodedPath = currentDocPath.split('/').map(encodeURIComponent).join('/');
+    await apiRequest(`/admin/books/${encodedPath}/cover`, {
       method: 'POST',
       body: formData,
     });

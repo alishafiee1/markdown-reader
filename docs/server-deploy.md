@@ -133,13 +133,13 @@ server {
 
 ## به‌روزرسانی محتوا
 
-فایل‌های جدید را در `content/docs` بگذار. تا پیاده‌سازی BookShelf کامل شود، می‌توانی:
+فایل‌های جدید را در `content/docs` بگذار. ایندکس متادیتا در **startup** به‌صورت خودکار (غیرمسدودکننده) اجرا می‌شود. برای بازسازی دستی:
 
 ```bash
-curl -X POST http://127.0.0.1:4001/api/sync-bundle
+curl -X POST -b "md_reader_session=..." http://127.0.0.1:4001/api/sync-index
 ```
 
-یا سرویس را restart کن (در نسخهٔ بعدی `sync-index` خودکار در startup).
+(با کوکی نشست ادمین — یا از UI بعد از ورود admino)
 
 ---
 
