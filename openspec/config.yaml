@@ -1,20 +1,21 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Standalone Node.js markdown reader web app (not a CMS module).
+  Tech stack: Node 18+, Express, sql.js (SQLite in-process), marked, multer.
+  Frontend: vanilla JS in public/ — no React.
+  Content source of truth: content/docs/ on disk; DB stores users, metadata, progress only.
+  Defaults: PORT=4001, HOST=0.0.0.0 for LAN access.
+  Human docs (FA): docs/change/bookshelf-reader/
+  AI compact map: docs-for-ai/change/bookshelf-reader.md
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - Include Non-goals section from human proposal
+    - List all capability spec names in Capabilities section
+  design:
+    - Reference ui-behavior.md and reading-themes-guide.md for UI details
+    - Document all /api/ endpoints
+  tasks:
+    - Map to phases 0-6 from human tasks.md
+    - Each task should name target files/modules
