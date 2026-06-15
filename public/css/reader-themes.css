@@ -1,0 +1,104 @@
+/* تم‌های مطالعه — فقط روی کارت خواندن اعمال می‌شود */
+
+.reader-card[data-theme='day'] {
+  --reader-bg: #fafaf8;
+  --reader-text: #1a1a1a;
+  --reader-text-secondary: #525252;
+  --reader-link: #2563eb;
+  --reader-code-bg: #f3f4f6;
+  --reader-code-text: #1e293b;
+  --reader-border: rgba(0, 0, 0, 0.06);
+}
+
+.reader-card[data-theme='sepia'] {
+  --reader-bg: #f4ecd8;
+  --reader-text: #3d3428;
+  --reader-text-secondary: #6b5e4c;
+  --reader-link: #8b4513;
+  --reader-code-bg: #e8dfc8;
+  --reader-code-text: #3d3428;
+  --reader-border: rgba(61, 52, 40, 0.12);
+}
+
+.reader-card[data-theme='dim'] {
+  --reader-bg: #2d2d2d;
+  --reader-text: #e8e8e8;
+  --reader-text-secondary: #a3a3a3;
+  --reader-link: #60a5fa;
+  --reader-code-bg: #1f1f1f;
+  --reader-code-text: #e8e8e8;
+  --reader-border: rgba(255, 255, 255, 0.08);
+}
+
+.reader-card[data-theme='night'] {
+  --reader-bg: #121212;
+  --reader-text: #e0e0e0;
+  --reader-text-secondary: #9ca3af;
+  --reader-link: #38bdf8;
+  --reader-code-bg: #0a0a0a;
+  --reader-code-text: #e0e0e0;
+  --reader-border: rgba(255, 255, 255, 0.08);
+  --reader-glow: linear-gradient(180deg, rgba(30, 58, 138, 0.35), transparent 80px);
+}
+
+.reader-card {
+  background: var(--reader-bg);
+  color: var(--reader-text);
+  border: 1px solid var(--reader-border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.reader-card[data-theme='night']::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 80px;
+  background: var(--reader-glow);
+  pointer-events: none;
+}
+
+.reader-card[data-font='normal'] .reader-content {
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.reader-card[data-font='large'] .reader-content {
+  font-size: 20px;
+  line-height: 1.75;
+}
+
+.reader-card[data-font='xlarge'] .reader-content {
+  font-size: 22px;
+  line-height: 1.75;
+}
+
+.reader-content {
+  font-family: 'Vazirmatn', 'Libre Baskerville', Georgia, serif;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.reader-content a {
+  color: var(--reader-link);
+}
+
+.reader-content code,
+.reader-content pre {
+  background: var(--reader-code-bg);
+  color: var(--reader-code-text);
+}
+
+.reader-content mark.search-hit {
+  background: #fbbf24;
+  color: #1a1a1a;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.reader-content mark.search-hit.active {
+  background: #f59e0b;
+  outline: 2px solid var(--accent-blue);
+}

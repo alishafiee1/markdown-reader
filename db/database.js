@@ -3,8 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 const initSqlJs = require('sql.js');
+const bcrypt = require('bcryptjs');
+const { WriteQueue } = require('./write-queue');
+const { UserRepository } = require('./user-repository');
+const { BookRepository } = require('./book-repository');
 
 const SCHEMA_PATH = path.join(__dirname, 'schema.sql');
+const BCRYPT_ROUNDS = 10;
 
 /**
  * Resolves sql.js wasm path inside node_modules.
@@ -16,9 +21,34 @@ function locateWasmFile(wasmFileName) {
 }
 
 /**
+ * Seeds default admin when no admin exists.
+ * @param {UserRepository} userRepository
+ * @returns {Promise<void>}
+ */
+async function seedAdminUser(userRepository) {
+  if (userRepository.hasAdminUser()) {
+    return;
+  }
+  const password = process.env.ADMIN_SEED_PASSWORD || 'admino';
+  const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+  const now = Date.now();
+  await userRepository.runWrite(() => {
+    userRepository.database.run(
+      'INSERT INTO users (username, password_hash, role, created_at) VALUES (?, ?, ?, ?)',
+      ['admino', passwordHash, 'admin', now],
+    );
+    const userId = userRepository.database.exec('SELECT last_insert_rowid() as id')[0].values[0][0];
+    userRepository.database.run(
+      'INSERT INTO user_preferences (user_id, reading_theme, font_scale) VALUES (?, ?, ?)',
+      [userId, 'night', 'normal'],
+    );
+  });
+}
+
+/**
  * Opens SQLite via sql.js (pure JS — no native rebuild per Node version).
  * @param {string} databaseFilePath - Path to articles.db
- * @returns {Promise<{ database: import('sql.js').Database, persist: () => void }>}
+ * @returns {Promise<{ database: import('sql.js').Database, persist: () => void, writeQueue: WriteQueue, articleRepository: ArticleRepository, userRepository: UserRepository, bookRepository: BookRepository }>}
  */
 async function openDatabase(databaseFilePath) {
   const directory = path.dirname(databaseFilePath);
@@ -37,6 +67,8 @@ async function openDatabase(databaseFilePath) {
   const schemaSql = fs.readFileSync(SCHEMA_PATH, 'utf8');
   database.exec(schemaSql);
 
+  const writeQueue = new WriteQueue();
+
   /**
    * Writes in-memory database to disk.
    */
@@ -45,8 +77,21 @@ async function openDatabase(databaseFilePath) {
     fs.writeFileSync(databaseFilePath, Buffer.from(exported));
   }
 
+  const articleRepository = new ArticleRepository(database, writeQueue, persist);
+  const userRepository = new UserRepository(database, writeQueue, persist);
+  const bookRepository = new BookRepository(database, writeQueue, persist);
+
+  await seedAdminUser(userRepository);
   persist();
-  return { database, persist };
+
+  return {
+    database,
+    persist,
+    writeQueue,
+    articleRepository,
+    userRepository,
+    bookRepository,
+  };
 }
 
 /**
@@ -55,11 +100,24 @@ async function openDatabase(databaseFilePath) {
 class ArticleRepository {
   /**
    * @param {import('sql.js').Database} database - sql.js database instance
+   * @param {WriteQueue} writeQueue - Serialized writes
    * @param {() => void} persist - Flush database to disk
    */
-  constructor(database, persist) {
+  constructor(database, writeQueue, persist) {
     this.database = database;
+    this.writeQueue = writeQueue;
     this.persist = persist;
+  }
+
+  /**
+   * @param {() => void} operation
+   * @returns {Promise<void>}
+   */
+  runWrite(operation) {
+    return this.writeQueue.enqueue(() => {
+      operation();
+      this.persist();
+    });
   }
 
   /**
@@ -220,6 +278,8 @@ function mapDetailRow(row) {
 module.exports = {
   openDatabase,
   ArticleRepository,
+  UserRepository,
+  BookRepository,
   mapListRow,
   mapDetailRow,
 };
