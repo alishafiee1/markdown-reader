@@ -7,6 +7,7 @@
 
 const { apiRequest, searchLibrary, browseFolder } = window.BookShelfApi;
 const { icon } = window.BookShelfIcons;
+const { escapeHtml } = window.BookShelfHtml;
 const { navigateToReader, navigateToLibrary } = window.BookShelfRouter;
 
 let searchTimer = null;
@@ -22,7 +23,7 @@ function renderCoverHtml(title, coverType, coverValue) {
     return `<img src="${coverValue}" alt="">`;
   }
   const color = coverType === 'color' && coverValue ? coverValue : '#2563EB';
-  return `<div class="book-cover" style="background:${color}">${title.slice(0, 24)}</div>`;
+  return `<div class="book-cover" style="background:${color}">${escapeHtml(title.slice(0, 24))}</div>`;
 }
 
 /**
@@ -32,10 +33,10 @@ function renderCoverHtml(title, coverType, coverValue) {
 function continueCardHtml(item) {
   const percent = Math.round((item.scrollRatio || 0) * 100);
   return `
-    <article class="continue-card" data-path="${item.docPath}">
+    <article class="continue-card" data-path="${escapeHtml(item.docPath)}">
       ${renderCoverHtml(item.title, item.coverType, item.coverValue)}
       <div class="book-meta">
-        <h3>${item.title}</h3>
+        <h3>${escapeHtml(item.title)}</h3>
         <p>ادامه از ${percent}٪</p>
         <div class="progress-bar"><span style="width:${percent}%"></span></div>
       </div>
@@ -53,7 +54,7 @@ async function loadCategories() {
     container.innerHTML =
       '<button class="pill active" data-path="">همه</button>' +
       folders
-        .map((folder) => `<button class="pill" data-path="${folder.path}">${folder.name}</button>`)
+        .map((folder) => `<button class="pill" data-path="${escapeHtml(folder.path)}">${escapeHtml(folder.name)}</button>`)
         .join('');
 
     container.querySelectorAll('.pill').forEach((pill) => {
@@ -150,9 +151,9 @@ function setupSearch() {
           results.innerHTML = items
             .map(
               (item) => `
-            <div class="search-result-item" data-path="${item.path}">
-              <div style="width:36px;height:48px;background:var(--bg-elevated);border-radius:4px;font-size:10px;display:flex;align-items:center;justify-content:center;">${item.title.slice(0, 8)}</div>
-              <div><strong>${item.title}</strong><br><small>${item.folder || 'ریشه'}</small></div>
+            <div class="search-result-item" data-path="${escapeHtml(item.path)}">
+              <div style="width:36px;height:48px;background:var(--bg-elevated);border-radius:4px;font-size:10px;display:flex;align-items:center;justify-content:center;">${escapeHtml(item.title.slice(0, 8))}</div>
+              <div><strong>${escapeHtml(item.title)}</strong><br><small>${escapeHtml(item.folder || 'ریشه')}</small></div>
             </div>`,
             )
             .join('');

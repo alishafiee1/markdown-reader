@@ -35,7 +35,7 @@ function renderLoggedIn(user) {
   }
 
   if (banner) {
-    banner.hidden = !(user.role === 'admin' && user.username === 'admino');
+    banner.hidden = !user.needsPasswordChange;
   }
 
   document.body.classList.toggle('is-admin', user.role === 'admin');

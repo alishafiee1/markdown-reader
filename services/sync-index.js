@@ -3,10 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 const { isBookFilename } = require('./path-safety');
-const { extractTitleAndDescription } = require('./metadata-extract');
+const { extractTitleAndDescription, isStoredTextCorrupt } = require('./metadata-extract');
 
 /**
- * همگام‌سازی ایندکس متادیتا --- rebuild empty book_metadata from content tree ---
+ * همگام‌سازی ایندکس متادیتا --- rebuild and repair book_metadata from content tree ---
  */
 
 /**
@@ -38,33 +38,48 @@ function walkBookFiles(directory, relativePrefix) {
 /**
  * @param {import('../db/book-repository').BookRepository} bookRepository
  * @param {string} contentDocsDirectory
- * @returns {Promise<{ inserted: number, skipped: number }>}
+ * @returns {Promise<{ inserted: number, updated: number, skipped: number }>}
  */
 async function syncMetadataIndex(bookRepository, contentDocsDirectory) {
   const docPaths = walkBookFiles(contentDocsDirectory, '');
   let inserted = 0;
+  let updated = 0;
   let skipped = 0;
 
   for (const docPath of docPaths) {
-    const existing = bookRepository.getMetadata(docPath);
-    if (existing) {
-      skipped += 1;
-      continue;
-    }
     const absolute = path.join(contentDocsDirectory, ...docPath.split('/'));
     const markdown = fs.readFileSync(absolute, 'utf8');
     const { title, description } = extractTitleAndDescription(markdown);
-    await bookRepository.upsertMetadata({
-      docPath,
-      title,
-      description,
-      coverType: 'none',
-      coverValue: '',
-    });
-    inserted += 1;
+    const existing = bookRepository.getMetadata(docPath);
+
+    if (!existing) {
+      await bookRepository.upsertMetadata({
+        docPath,
+        title,
+        description,
+        coverType: 'none',
+        coverValue: '',
+      });
+      inserted += 1;
+      continue;
+    }
+
+    if (isStoredTextCorrupt(String(existing.title), String(existing.description))) {
+      await bookRepository.upsertMetadata({
+        docPath,
+        title,
+        description,
+        coverType: String(existing.cover_type || 'none'),
+        coverValue: String(existing.cover_value || ''),
+      });
+      updated += 1;
+      continue;
+    }
+
+    skipped += 1;
   }
 
-  return { inserted, skipped };
+  return { inserted, updated, skipped };
 }
 
 module.exports = {

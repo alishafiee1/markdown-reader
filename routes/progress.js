@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { requireAuth } = require('../middleware/session');
 const { resolveSafeContentPath, isBookFilename } = require('../services/path-safety');
-const { extractTitleAndDescription, fallbackCoverColor } = require('../services/metadata-extract');
+const { extractTitleAndDescription, fallbackCoverColor, resolveBookText } = require('../services/metadata-extract');
 
 /**
  * پیشرفت مطالعه --- PUT /api/progress and GET /api/progress/recent ---
@@ -47,16 +47,16 @@ function createProgressRouter(options) {
     const items = rows.map((row) => {
       const docPath = String(row.doc_path);
       const metadata = bookRepository.getMetadata(docPath);
-      let title = metadata?.title ? String(metadata.title) : docPath;
+      let title = docPath;
       let coverType = metadata?.cover_type ? String(metadata.cover_type) : 'color';
       let coverValue = metadata?.cover_value ? String(metadata.cover_value) : '';
 
-      if (!metadata) {
-        const absolute = path.join(contentDocsDirectory, ...docPath.split('/'));
-        if (fs.existsSync(absolute)) {
-          const markdown = fs.readFileSync(absolute, 'utf8');
-          const extracted = extractTitleAndDescription(markdown);
-          title = extracted.title;
+      const absolute = path.join(contentDocsDirectory, ...docPath.split('/'));
+      if (fs.existsSync(absolute)) {
+        const markdown = fs.readFileSync(absolute, 'utf8');
+        const extracted = extractTitleAndDescription(markdown);
+        title = resolveBookText(metadata, extracted).title;
+        if (!coverValue && coverType === 'color') {
           coverValue = fallbackCoverColor(title);
         }
       } else if (!coverValue && coverType === 'color') {

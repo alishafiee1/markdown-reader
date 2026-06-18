@@ -21,6 +21,7 @@ const DATABASE_PATH = path.join(MODULE_ROOT, 'data', 'articles.db');
 const CONTENT_DOCS_DIRECTORY = path.join(MODULE_ROOT, 'content', 'docs');
 const COVERS_DIRECTORY = path.join(MODULE_ROOT, 'data', 'covers');
 const PUBLIC_DIRECTORY = path.join(MODULE_ROOT, 'public');
+const SESSION_CLEANUP_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 /**
  * Resolves bind host: 0.0.0.0 in production or when HOST=0.0.0.0.
@@ -52,9 +53,14 @@ async function createApplication() {
     databasePath,
   );
 
-  syncBundleContent(repository, CONTENT_DOCS_DIRECTORY);
+  await syncBundleContent(repository, CONTENT_DOCS_DIRECTORY);
+  await userRepository.purgeExpiredSessions();
 
   const expressApp = express();
+  if (process.env.TRUST_PROXY === '1' || process.env.NODE_ENV === 'production') {
+    expressApp.set('trust proxy', 1);
+  }
+
   expressApp.use(express.json({ limit: '2mb' }));
   expressApp.use(createSessionMiddleware({ userRepository }));
 
@@ -93,6 +99,13 @@ async function createApplication() {
       console.error('sync-index startup failed:', error);
     });
   });
+
+  const sessionCleanupInterval = setInterval(() => {
+    userRepository.purgeExpiredSessions().catch((error) => {
+      console.error('session cleanup failed:', error);
+    });
+  }, SESSION_CLEANUP_INTERVAL_MS);
+  sessionCleanupInterval.unref();
 
   return { app: expressApp, articleRepository: repository, userRepository, bookRepository };
 }

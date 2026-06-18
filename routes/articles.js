@@ -46,7 +46,7 @@ function createArticlesRouter(options) {
     response.json(mapDetailRow(row));
   });
 
-  router.post('/articles', upload.single('file'), (request, response) => {
+  router.post('/articles', upload.single('file'), async (request, response) => {
     try {
       let filename;
       let markdown;
@@ -71,7 +71,7 @@ function createArticlesRouter(options) {
       const html = renderMarkdownToHtml(markdown);
       const now = Date.now();
 
-      articleRepository.upsertUpload({
+      await articleRepository.upsertUpload({
         slug,
         filename,
         markdown,
@@ -87,23 +87,35 @@ function createArticlesRouter(options) {
     }
   });
 
-  router.delete('/articles/:slug', (request, response) => {
-    const result = articleRepository.deleteBySlug(request.params.slug);
-    if (result.changes === 0) {
-      response.status(404).json({ error: 'Article not found' });
-      return;
+  router.delete('/articles/:slug', async (request, response) => {
+    try {
+      const result = await articleRepository.deleteBySlug(request.params.slug);
+      if (result.changes === 0) {
+        response.status(404).json({ error: 'Article not found' });
+        return;
+      }
+      response.status(204).send();
+    } catch (error) {
+      response.status(500).json({ error: String(error.message || error) });
     }
-    response.status(204).send();
   });
 
-  router.delete('/articles', (_request, response) => {
-    articleRepository.deleteAll();
-    response.status(204).send();
+  router.delete('/articles', async (_request, response) => {
+    try {
+      await articleRepository.deleteAll();
+      response.status(204).send();
+    } catch (error) {
+      response.status(500).json({ error: String(error.message || error) });
+    }
   });
 
-  router.post('/sync-bundle', (_request, response) => {
-    const stats = syncBundleContent(articleRepository, contentDocsDirectory);
-    response.json({ ok: true, stats });
+  router.post('/sync-bundle', async (_request, response) => {
+    try {
+      const stats = await syncBundleContent(articleRepository, contentDocsDirectory);
+      response.json({ ok: true, stats });
+    } catch (error) {
+      response.status(500).json({ error: String(error.message || error) });
+    }
   });
 
   return router;

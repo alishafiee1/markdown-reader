@@ -2,7 +2,7 @@
 
 ### Requirement: Document fetch and render
 
-The system SHALL expose `GET /api/doc?path=` returning raw markdown, rendered HTML, document title, and optional heading TOC for valid book paths.
+The system SHALL expose `GET /api/doc?path=` returning rendered HTML, document title, and optional heading TOC for valid book paths. Raw markdown stays server-side.
 
 #### Scenario: Open book from library
 

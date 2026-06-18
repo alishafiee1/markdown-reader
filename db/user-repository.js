@@ -106,6 +106,19 @@ class UserRepository {
 
   /**
    * @param {number} userId
+   * @returns {Promise<boolean>}
+   */
+  async isUsingSeedPassword(userId) {
+    const user = this.findById(userId);
+    if (!user) {
+      return false;
+    }
+    const seedPassword = process.env.ADMIN_SEED_PASSWORD || 'admino';
+    return bcrypt.compare(seedPassword, String(user.password_hash));
+  }
+
+  /**
+   * @param {number} userId
    * @returns {Record<string, unknown>|undefined}
    */
   getPreferences(userId) {
@@ -175,7 +188,7 @@ class UserRepository {
       return undefined;
     }
     if (Number(row.expires_at) < Date.now()) {
-      this.deleteSessionByToken(token);
+      void this.deleteSessionByToken(token);
       return undefined;
     }
     return row;
@@ -183,11 +196,13 @@ class UserRepository {
 
   /**
    * @param {string} token
+   * @returns {Promise<void>}
    */
-  deleteSessionByToken(token) {
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    this.database.run('DELETE FROM sessions WHERE token_hash = ?', [tokenHash]);
-    this.persist();
+  async deleteSessionByToken(token) {
+    await this.runWrite(() => {
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      this.database.run('DELETE FROM sessions WHERE token_hash = ?', [tokenHash]);
+    });
   }
 
   /**
@@ -195,9 +210,13 @@ class UserRepository {
    * @returns {Promise<void>}
    */
   async logout(token) {
+    await this.deleteSessionByToken(token);
+  }
+
+  /** @returns {Promise<void>} */
+  async purgeExpiredSessions() {
     await this.runWrite(() => {
-      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-      this.database.run('DELETE FROM sessions WHERE token_hash = ?', [tokenHash]);
+      this.database.run('DELETE FROM sessions WHERE expires_at < ?', [Date.now()]);
     });
   }
 }

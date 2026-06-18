@@ -4,6 +4,9 @@
  * کمک‌کنندهٔ تست E2E --- shared Playwright helpers for BookShelf ---
  */
 
+/** Stable sample book path that exists in content/docs */
+const SAMPLE_DOC_PATH = '00-start-new-project/readme.md';
+
 /**
  * Skips welcome screen and opens home.
  * @param {import('@playwright/test').Page} page
@@ -64,6 +67,7 @@ async function openLibrary(page) {
 }
 
 module.exports = {
+  SAMPLE_DOC_PATH,
   skipWelcome,
   openAccountPage,
   registerUser,

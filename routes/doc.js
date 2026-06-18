@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { renderMarkdownToHtml } = require('../services/markdown-render');
 const { PathSafetyError, resolveSafeContentPath, isBookFilename } = require('../services/path-safety');
-const { extractTitleAndDescription, fallbackCoverColor } = require('../services/metadata-extract');
+const { extractTitleAndDescription, fallbackCoverColor, resolveBookText } = require('../services/metadata-extract');
 
 /**
  * مسیر سند --- GET /api/doc markdown fetch and HTML render ---
@@ -17,7 +17,7 @@ const { extractTitleAndDescription, fallbackCoverColor } = require('../services/
  */
 function buildTableOfContents(html) {
   const headings = [];
-  const pattern = /<h([1-6])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h\1>/gi;
+  const pattern = /<h([1-6])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h\1>/gis;
   let match = pattern.exec(html);
   while (match) {
     headings.push({
@@ -37,7 +37,7 @@ function buildTableOfContents(html) {
  */
 function addHeadingIds(html) {
   let index = 0;
-  return html.replace(/<h([1-6])([^>]*)>(.*?)<\/h\1>/gi, (full, level, attrs, text) => {
+  return html.replace(/<h([1-6])([^>]*)>(.*?)<\/h\1>/gis, (full, level, attrs, text) => {
     if (/\bid=/.test(attrs)) {
       return full;
     }
@@ -80,8 +80,7 @@ function createDocRouter(options) {
       const markdown = fs.readFileSync(absolutePath, 'utf8');
       const extracted = extractTitleAndDescription(markdown);
       const metadata = bookRepository.getMetadata(safePath);
-      const title = metadata?.title ? String(metadata.title) : extracted.title;
-      const description = metadata?.description ? String(metadata.description) : extracted.description;
+      const { title, description } = resolveBookText(metadata, extracted);
       const coverType = metadata?.cover_type ? String(metadata.cover_type) : 'color';
       const coverValue =
         metadata?.cover_value && String(metadata.cover_value)
@@ -99,7 +98,6 @@ function createDocRouter(options) {
         description,
         coverType,
         coverValue,
-        markdown,
         html,
         toc,
       });
@@ -116,5 +114,7 @@ function createDocRouter(options) {
 }
 
 module.exports = {
+  addHeadingIds,
+  buildTableOfContents,
   createDocRouter,
 };

@@ -7,6 +7,7 @@
 
 const { browseFolder } = window.BookShelfApi;
 const { icon } = window.BookShelfIcons;
+const { escapeHtml } = window.BookShelfHtml;
 const { navigateToReader, state } = window.BookShelfRouter;
 
 /**
@@ -20,7 +21,7 @@ function coverBlock(title, coverType, coverValue) {
     return `<div class="book-cover"><img src="${coverValue}" alt=""></div>`;
   }
   const color = coverValue || '#2563EB';
-  return `<div class="book-cover" style="background:${color}">${title.slice(0, 20)}</div>`;
+  return `<div class="book-cover" style="background:${color}">${escapeHtml(title.slice(0, 20))}</div>`;
 }
 
 /**
@@ -31,7 +32,7 @@ function breadcrumbsHtml(breadcrumbs) {
   return breadcrumbs
     .map((crumb, index) => {
       const sep = index > 0 ? '<span class="sep">›</span>' : '';
-      return `${sep}<button type="button" data-crumb="${crumb.path}">${crumb.label}</button>`;
+      return `${sep}<button type="button" data-crumb="${escapeHtml(crumb.path)}">${escapeHtml(crumb.label)}</button>`;
     })
     .join('');
 }
@@ -62,9 +63,9 @@ async function open(folderPath = '') {
     const folders = (listing.folders || [])
       .map(
         (folder) => `
-      <article class="folder-card" data-folder="${folder.path}">
+      <article class="folder-card" data-folder="${escapeHtml(folder.path)}">
         <div class="folder-icon">${icon('folder')}</div>
-        <div class="book-meta"><h3>${folder.name}</h3></div>
+        <div class="book-meta"><h3>${escapeHtml(folder.name)}</h3></div>
       </article>`,
       )
       .join('');
@@ -72,10 +73,10 @@ async function open(folderPath = '') {
     const books = (listing.books || [])
       .map(
         (book) => `
-      <article class="book-card" data-book="${book.path}">
-        <button type="button" class="admin-edit-btn" data-edit="${book.path}" title="ویرایش جلد">${icon('edit')}</button>
+      <article class="book-card" data-book="${escapeHtml(book.path)}">
+        <button type="button" class="admin-edit-btn" data-edit="${escapeHtml(book.path)}" title="ویرایش جلد">${icon('edit')}</button>
         ${coverBlock(book.title, book.coverType, book.coverValue)}
-        <div class="book-meta"><h3>${book.title}</h3><p>${book.description || ''}</p></div>
+        <div class="book-meta"><h3>${escapeHtml(book.title)}</h3><p>${escapeHtml(book.description || '')}</p></div>
       </article>`,
       )
       .join('');

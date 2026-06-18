@@ -1,8 +1,22 @@
 'use strict';
 
 /**
- * استخراج عنوان و توضیح از مارک‌داون --- title/description from first lines or heading ---
+ * استخراج عنوان و توضیح از مارک‌داون --- title/description from heading or first text lines ---
  */
+
+const DEFAULT_TITLE = 'بدون عنوان';
+
+/**
+ * Strips block HTML that often appears at the top of Persian docs.
+ * @param {string} markdownSource
+ * @returns {string}
+ */
+function stripHtmlBlocks(markdownSource) {
+  return String(markdownSource || '')
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '');
+}
 
 /**
  * Strips common markdown/HTML wrappers from a line.
@@ -11,12 +25,134 @@
  */
 function cleanLine(line) {
   return String(line || '')
-    .replace(/<div[^>]*>/gi, '')
-    .replace(/<\/div>/gi, '')
+    .replace(/<[^>]+>/g, '')
     .replace(/^#+\s*/, '')
     .replace(/\*\*|__/g, '')
     .replace(/`/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .trim();
+}
+
+/**
+ * @param {string} line
+ * @returns {boolean}
+ */
+function isHtmlMarkupLine(line) {
+  const trimmed = String(line || '').trim();
+  if (!trimmed) {
+    return false;
+  }
+  return (
+    /^<\/?[a-z][^>]*>/i.test(trimmed) ||
+    trimmed === '</style>' ||
+    trimmed === '<style>'
+  );
+}
+
+/**
+ * @param {string} line
+ * @returns {boolean}
+ */
+function isSkippableLine(line) {
+  const trimmed = String(line || '').trim();
+  if (!trimmed) {
+    return true;
+  }
+  if (isHtmlMarkupLine(trimmed)) {
+    return true;
+  }
+  return /^[-*_]{3,}$/.test(trimmed);
+}
+
+/**
+ * @param {string} line
+ * @returns {string|undefined}
+ */
+function parseHeadingLine(line) {
+  const trimmed = String(line || '').trim();
+  const headingMatch = trimmed.match(/^#{1,6}\s+(.+)/);
+  if (!headingMatch) {
+    return undefined;
+  }
+  const title = cleanLine(headingMatch[1]);
+  return title || undefined;
+}
+
+/**
+ * @param {string[]} lines
+ * @param {number} startIndex
+ * @returns {string}
+ */
+function findNextTextLine(lines, startIndex) {
+  for (let index = startIndex; index < lines.length; index += 1) {
+    const raw = lines[index].trim();
+    if (isSkippableLine(raw)) {
+      continue;
+    }
+    const text = cleanLine(raw);
+    if (text) {
+      return text;
+    }
+  }
+  return '';
+}
+
+/**
+ * @param {string} markdownSource
+ * @returns {string[]}
+ */
+function toContentLines(markdownSource) {
+  return stripHtmlBlocks(markdownSource).split(/\r?\n/);
+}
+
+/**
+ * Detects titles/descriptions saved before HTML-aware extraction.
+ * @param {string} title
+ * @param {string} [description]
+ * @returns {boolean}
+ */
+function isStoredTextCorrupt(title, description) {
+  const storedTitle = String(title || '').trim();
+  const storedDescription = String(description || '').trim();
+
+  if (!storedTitle) {
+    return true;
+  }
+  if (/^<\/?[a-z][^>]*>$/i.test(storedTitle)) {
+    return true;
+  }
+  if (/^<style>$/i.test(storedTitle)) {
+    return true;
+  }
+  if (/[{}]|font-family|!important|direction:\s*rtl/i.test(storedDescription)) {
+    return true;
+  }
+  if (/^}?\s*body\s*,/i.test(storedDescription)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Prefers admin-edited DB text; falls back to fresh file extraction when stored text is corrupt.
+ * @param {Record<string, unknown>|undefined} metadata
+ * @param {{ title: string, description: string }} extracted
+ * @returns {{ title: string, description: string }}
+ */
+function resolveBookText(metadata, extracted) {
+  if (
+    metadata?.title &&
+    !isStoredTextCorrupt(String(metadata.title), metadata.description ? String(metadata.description) : '')
+  ) {
+    return {
+      title: String(metadata.title),
+      description: metadata.description ? String(metadata.description) : '',
+    };
+  }
+  return {
+    title: extracted.title,
+    description: extracted.description,
+  };
 }
 
 /**
@@ -24,33 +160,33 @@ function cleanLine(line) {
  * @returns {{ title: string, description: string }}
  */
 function extractTitleAndDescription(markdownSource) {
-  const lines = String(markdownSource || '').split(/\r?\n/);
-  const nonEmpty = lines.map(cleanLine).filter((line) => line.length > 0);
-
-  let title = 'بدون عنوان';
-  let description = '';
+  const lines = toContentLines(markdownSource);
 
   for (let index = 0; index < lines.length; index += 1) {
-    const raw = lines[index].trim();
-    if (!raw) {
+    const title = parseHeadingLine(lines[index]);
+    if (!title) {
       continue;
     }
-    const headingMatch = raw.match(/^#{1,6}\s+(.+)/);
-    if (headingMatch) {
-      title = cleanLine(headingMatch[1]);
-      const nextLines = lines.slice(index + 1).map(cleanLine).filter(Boolean);
-      description = nextLines[0] || '';
-      return { title, description };
+    const description = findNextTextLine(lines, index + 1);
+    return { title, description };
+  }
+
+  const textLines = [];
+  for (const line of lines) {
+    const raw = line.trim();
+    if (isSkippableLine(raw)) {
+      continue;
     }
-    break;
+    const text = cleanLine(raw);
+    if (text) {
+      textLines.push(text);
+    }
   }
 
-  if (nonEmpty.length > 0) {
-    title = nonEmpty[0];
-    description = nonEmpty[1] || '';
-  }
-
-  return { title, description };
+  return {
+    title: textLines[0] || DEFAULT_TITLE,
+    description: textLines[1] || '',
+  };
 }
 
 /**
@@ -71,4 +207,9 @@ module.exports = {
   extractTitleAndDescription,
   fallbackCoverColor,
   cleanLine,
+  stripHtmlBlocks,
+  parseHeadingLine,
+  findNextTextLine,
+  isStoredTextCorrupt,
+  resolveBookText,
 };

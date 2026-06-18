@@ -10,6 +10,19 @@ const SESSION_COOKIE_NAME = 'md_reader_session';
  */
 
 /**
+ * Builds the shared session cookie options.
+ * @returns {cookie.CookieSerializeOptions}
+ */
+function getSessionCookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.COOKIE_SECURE === 'true' || process.env.NODE_ENV === 'production',
+    path: '/',
+  };
+}
+
+/**
  * @param {{ userRepository: import('../db/user-repository').UserRepository }} options
  * @returns {import('express').RequestHandler}
  */
@@ -38,9 +51,7 @@ function createSessionMiddleware(options) {
       response.setHeader(
         'Set-Cookie',
         cookie.serialize(SESSION_COOKIE_NAME, sessionToken, {
-          httpOnly: true,
-          sameSite: 'lax',
-          path: '/',
+          ...getSessionCookieOptions(),
           maxAge: SESSION_DAYS * 24 * 60 * 60,
         }),
       );
@@ -50,9 +61,7 @@ function createSessionMiddleware(options) {
       response.setHeader(
         'Set-Cookie',
         cookie.serialize(SESSION_COOKIE_NAME, '', {
-          httpOnly: true,
-          sameSite: 'lax',
-          path: '/',
+          ...getSessionCookieOptions(),
           maxAge: 0,
         }),
       );
@@ -78,4 +87,5 @@ module.exports = {
   createSessionMiddleware,
   requireAuth,
   SESSION_COOKIE_NAME,
+  getSessionCookieOptions,
 };

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { resolveSafeContentPath, isBookFilename } = require('./path-safety');
-const { extractTitleAndDescription, fallbackCoverColor } = require('./metadata-extract');
+const { extractTitleAndDescription, fallbackCoverColor, resolveBookText } = require('./metadata-extract');
 
 /**
  * مرور یک سطح پوشه --- safe one-level listing from content/docs ---
@@ -67,9 +67,7 @@ function listOneLevel(contentDocsDirectory, relativePath, getMetadata) {
     const markdown = fs.readFileSync(fileAbsolute, 'utf8');
     const extracted = extractTitleAndDescription(markdown);
     const metadata = getMetadata ? getMetadata(childRelative) : undefined;
-
-    const title = metadata?.title ? String(metadata.title) : extracted.title;
-    const description = metadata?.description ? String(metadata.description) : extracted.description;
+    const { title, description } = resolveBookText(metadata, extracted);
     const coverType = metadata?.cover_type ? String(metadata.cover_type) : 'color';
     const coverValue =
       metadata?.cover_value && String(metadata.cover_value)

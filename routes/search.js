@@ -4,7 +4,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const { walkBookFiles } = require('../services/sync-index');
-const { extractTitleAndDescription } = require('../services/metadata-extract');
+const { extractTitleAndDescription, resolveBookText } = require('../services/metadata-extract');
 
 /**
  * جستجوی کتابخانه --- GET /api/search on title, description, filename ---
@@ -32,16 +32,10 @@ function createSearchRouter(options) {
       for (const docPath of docPaths) {
         const metadata = bookRepository.getMetadata(docPath);
         const filename = path.basename(docPath);
-        let title = metadata?.title ? String(metadata.title) : '';
-        let description = metadata?.description ? String(metadata.description) : '';
-
-        if (!title) {
-          const absolute = path.join(contentDocsDirectory, ...docPath.split('/'));
-          const markdown = fs.readFileSync(absolute, 'utf8');
-          const extracted = extractTitleAndDescription(markdown);
-          title = extracted.title;
-          description = extracted.description;
-        }
+        const absolute = path.join(contentDocsDirectory, ...docPath.split('/'));
+        const markdown = fs.readFileSync(absolute, 'utf8');
+        const extracted = extractTitleAndDescription(markdown);
+        const { title, description } = resolveBookText(metadata, extracted);
 
         const haystack = `${title} ${description} ${filename}`.toLowerCase();
         if (!haystack.includes(query)) {

@@ -100,6 +100,8 @@ module.exports = {
       PORT: 4002,
       HOST: '0.0.0.0',
       NODE_ENV: 'production',
+      COOKIE_SECURE: 'true',
+      TRUST_PROXY: '1',
       // ADMIN_SEED_PASSWORD: 'رمز-قوی-اولیه',
     },
   }],
@@ -131,6 +133,9 @@ User=ash
 WorkingDirectory=/home/ash/markdown-reader
 Environment=PORT=4002
 Environment=HOST=0.0.0.0
+Environment=NODE_ENV=production
+Environment=COOKIE_SECURE=true
+Environment=TRUST_PROXY=1
 ExecStart=/usr/bin/node server.js
 Restart=on-failure
 
@@ -164,6 +169,29 @@ server {
 }
 ```
 
+اگر پروژه را روی اینترنت یا پشت HTTPS می‌گذاری، حتماً `NODE_ENV=production` و `COOKIE_SECURE=true` را هم بگذار. این دو مثل این‌اند که روی کوکی ورود کاربر یک برچسب «فقط از مسیر امن بفرست» می‌زنیم؛ یعنی مرورگر کوکی نشست را روی HTTP ساده نمی‌فرستد.
+
+وقتی nginx جلوی Node است، `TRUST_PROXY=1` هم لازم است تا Express بداند درخواست واقعی از پشت proxy آمده. نمونهٔ حداقلی برای HTTPS:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name docs.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/docs.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/docs.example.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:4002;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
 ---
 
 ## به‌روزرسانی محتوا
@@ -189,7 +217,9 @@ curl -X POST -b "md_reader_session=..." http://127.0.0.1:4002/api/sync-index
 ## امنیت ساده
 
 - کاربر seed: `admino` — رمز پیش‌فرض `admino`؛ در production با `ADMIN_SEED_PASSWORD` قبل از اولین `npm start` عوض کن
-- رمز را بعد از اولین ورود از UI هم می‌توانی عوض کنی
+- اگر رمز seed را قبل از اولین اجرا عوض نکنی، برنامه فقط هشدار می‌دهد؛ endpoint تغییر رمز هنوز جزو فاز بعدی است
+- `COOKIE_SECURE=true` و `TRUST_PROXY=1` را وقتی پشت HTTPS/nginx هستی فعال کن
+- مسیرهای خواندن کتابخانه مثل `/api/browse`، `/api/doc` و `/api/search` عمداً عمومی‌اند؛ اما پیشرفت مطالعه، تنظیمات کاربر و کارهای ادمین نیاز به ورود دارند
 - اگر از اینترنت عمومی در دسترس است، پشت nginx با HTTPS و محدودیت IP فکر کن
 - این پروژه برای شبکهٔ شخصی/تیمی طراحی شده، نه SaaS عمومی
 

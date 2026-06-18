@@ -38,9 +38,9 @@ function listBundleMarkdownFiles(contentDocsDirectory) {
  * Syncs bundled markdown files into SQLite without overwriting uploads.
  * @param {import('../db/database').ArticleRepository} articleRepository - DB layer
  * @param {string} contentDocsDirectory - Path to content/docs
- * @returns {{ inserted: number, updated: number, skipped: number }}
+ * @returns {Promise<{ inserted: number, updated: number, skipped: number }>}
  */
-function syncBundleContent(articleRepository, contentDocsDirectory) {
+async function syncBundleContent(articleRepository, contentDocsDirectory) {
   const files = listBundleMarkdownFiles(contentDocsDirectory);
   let inserted = 0;
   let updated = 0;
@@ -61,7 +61,7 @@ function syncBundleContent(articleRepository, contentDocsDirectory) {
     const html = renderMarkdownToHtml(markdown);
 
     if (existing) {
-      articleRepository.updateArticle({
+      await articleRepository.updateArticle({
         slug,
         filename,
         markdown,
@@ -72,7 +72,7 @@ function syncBundleContent(articleRepository, contentDocsDirectory) {
       });
       updated += 1;
     } else {
-      articleRepository.insertArticle({
+      await articleRepository.insertArticle({
         slug,
         filename,
         markdown,

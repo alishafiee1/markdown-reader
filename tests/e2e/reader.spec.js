@@ -1,12 +1,12 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
-const { skipWelcome } = require('./helpers');
+const { skipWelcome, SAMPLE_DOC_PATH } = require('./helpers');
 
 test.describe('Reader — themes and in-doc search', () => {
   test.beforeEach(async ({ page }) => {
     await skipWelcome(page);
-    await page.goto('/?path=write-docs-friendly/readme.md');
+    await page.goto(`/?path=${encodeURIComponent(SAMPLE_DOC_PATH)}`);
     await page.locator('#readerContent').waitFor({ state: 'visible' });
   });
 
@@ -26,7 +26,7 @@ test.describe('Reader — themes and in-doc search', () => {
   test('in-document search highlights matches', async ({ page }) => {
     await page.locator('#readerSearchToggle').click();
     await page.locator('#readerSearchPanel').waitFor({ state: 'visible' });
-    await page.locator('#readerSearchInput').fill('project');
+    await page.locator('#readerSearchInput').fill('proposal');
     await expect(page.locator('#readerContent mark.search-hit').first()).toBeVisible({ timeout: 5000 });
     await expect(page.locator('#readerSearchCount')).not.toHaveText('یافت نشد');
   });

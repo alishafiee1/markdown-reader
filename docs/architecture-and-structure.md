@@ -59,7 +59,7 @@
 
 ## متغیرهای محیط
 
-`PORT` (4002) · `HOST` (0.0.0.0) · `MARKDOWN_READER_DB` · `MD_READER_RUN_TESTS`
+`PORT` (4002) · `HOST` (0.0.0.0) · `MARKDOWN_READER_DB` · `NODE_ENV` · `COOKIE_SECURE` · `TRUST_PROXY` · `AUTH_MIN_PASSWORD_LENGTH` · `MD_READER_RUN_TESTS`
 
 جزئیات: [server-deploy.md](server-deploy.md) و `.env.example`.
 

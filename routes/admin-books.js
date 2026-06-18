@@ -9,6 +9,7 @@ const { requireAdmin } = require('../middleware/require-admin');
 const { resolveSafeContentPath, isBookFilename, PathSafetyError } = require('../services/path-safety');
 const { extractTitleAndDescription } = require('../services/metadata-extract');
 const { syncMetadataIndex } = require('../services/sync-index');
+const { deleteCoverFileIfExists } = require('../services/cover-files');
 
 const MAX_COVER_BYTES = 2 * 1024 * 1024;
 const upload = multer({
@@ -68,6 +69,7 @@ function createAdminBooksRouter(options) {
       fs.writeFileSync(coverPath, request.file.buffer);
 
       const existing = bookRepository.getMetadata(docPath);
+      const oldCoverValue = existing ? String(existing.cover_value || '') : '';
       const markdown = fs.readFileSync(absolutePath, 'utf8');
       const extracted = extractTitleAndDescription(markdown);
 
@@ -77,6 +79,9 @@ function createAdminBooksRouter(options) {
         coverType: 'image',
         coverValue: `/api/covers/${fileName}`,
       });
+      if (oldCoverValue && oldCoverValue !== `/api/covers/${fileName}`) {
+        deleteCoverFileIfExists(coversDirectory, oldCoverValue);
+      }
 
       response.json({
         docPath,
@@ -104,14 +109,20 @@ function createAdminBooksRouter(options) {
       const markdown = fs.readFileSync(absolutePath, 'utf8');
       const extracted = extractTitleAndDescription(markdown);
       const existing = bookRepository.getMetadata(docPath);
+      const oldCoverValue = existing ? String(existing.cover_value || '') : '';
+      const nextCoverType = request.body?.coverType ?? (existing ? String(existing.cover_type) : 'color');
+      const nextCoverValue = request.body?.coverValue ?? oldCoverValue;
 
       const metadata = await bookRepository.patchMetadata(docPath, {
         title: request.body?.title ?? (existing ? String(existing.title) : extracted.title),
         description:
           request.body?.description ?? (existing ? String(existing.description) : extracted.description),
-        coverType: request.body?.coverType ?? (existing ? String(existing.cover_type) : 'color'),
-        coverValue: request.body?.coverValue ?? (existing ? String(existing.cover_value) : ''),
+        coverType: nextCoverType,
+        coverValue: nextCoverValue,
       });
+      if (oldCoverValue && (nextCoverType !== 'image' || oldCoverValue !== nextCoverValue)) {
+        deleteCoverFileIfExists(coversDirectory, oldCoverValue);
+      }
 
       response.json({
         docPath,

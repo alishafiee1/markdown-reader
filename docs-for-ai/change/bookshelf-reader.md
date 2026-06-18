@@ -5,7 +5,7 @@
 
 ## Project context
 
-Standalone Node app — **no CMS/module packaging** in this repo. Deploy: `docs/server-deploy.md` (port 4002, HOST 0.0.0.0).
+Standalone Node app — **no CMS/module packaging** in this repo. Deploy: `docs/server-deploy.md` (port 4002, HOST 0.0.0.0, HTTPS production uses `COOKIE_SECURE=true` + `TRUST_PROXY=1`).
 
 ## Goal
 
@@ -30,7 +30,7 @@ Replace flat article list with **folder explorer** over `content/docs`, **BookSh
 | Endpoint | Notes |
 |----------|--------|
 | GET `/api/browse?path=` | Safe one-level listing |
-| GET `/api/doc?path=` | Markdown + HTML |
+| GET `/api/doc?path=` | Rendered HTML + TOC; raw markdown is not exposed |
 | GET `/api/search?q=` | Title/desc/filename |
 | POST `/api/auth/*` | register, login, logout |
 | GET/PUT `/api/me`, `/api/me/preferences` | |
@@ -42,6 +42,8 @@ Replace flat article list with **folder explorer** over `content/docs`, **BookSh
 
 - `PORT=4002`, `HOST=0.0.0.0`
 - Path traversal blocked on all `path` params
+- `GET /api/browse`, `/api/doc`, and `/api/search` are intentionally public; progress/admin APIs require session auth
+- Production cookies are `httpOnly`, `sameSite=lax`, and `secure` when `NODE_ENV=production` or `COOKIE_SECURE=true`
 
 ## UI pages
 

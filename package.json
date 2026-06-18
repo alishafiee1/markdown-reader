@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "stop": "node scripts/free-port.js",
-    "test": "node tests/test_bookshelf_api.js && node tests/test_articles_api.js",
+    "test": "node tests/test_bookshelf_api.js && node tests/test_articles_api.js && node tests/test_metadata_extract.js",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },
@@ -17,6 +17,7 @@
     "bcryptjs": "^3.0.3",
     "cookie": "^1.1.1",
     "express": "^4.22.2",
+    "express-rate-limit": "^8.5.2",
     "marked": "15.0.7",
     "multer": "1.4.5-lts.2",
     "sql.js": "1.13.0"

@@ -122,71 +122,77 @@ class ArticleRepository {
 
   /**
    * @param {{ slug: string, filename: string, markdown: string, html: string, source: string, dateAdded: number, updatedAt: number }} article
+   * @returns {Promise<void>}
    */
-  insertArticle(article) {
-    this.database.run(
-      `INSERT INTO articles (slug, filename, markdown, html, source, date_added, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [
-        article.slug,
-        article.filename,
-        article.markdown,
-        article.html,
-        article.source,
-        article.dateAdded,
-        article.updatedAt,
-      ],
-    );
-    this.persist();
-  }
-
-  /**
-   * @param {{ slug: string, filename: string, markdown: string, html: string, source: string, dateAdded: number, updatedAt: number }} article
-   */
-  updateArticle(article) {
-    this.database.run(
-      `UPDATE articles
-       SET filename = ?, markdown = ?, html = ?, source = ?, updated_at = ?
-       WHERE slug = ?`,
-      [
-        article.filename,
-        article.markdown,
-        article.html,
-        article.source,
-        article.updatedAt,
-        article.slug,
-      ],
-    );
-    this.persist();
-  }
-
-  /**
-   * @param {{ slug: string, filename: string, markdown: string, html: string, dateAdded: number, updatedAt: number }} article
-   */
-  upsertUpload(article) {
-    const existing = this.findBySlug(article.slug);
-    if (existing) {
-      this.database.run(
-        `UPDATE articles
-         SET filename = ?, markdown = ?, html = ?, source = 'upload', updated_at = ?
-         WHERE slug = ?`,
-        [article.filename, article.markdown, article.html, article.updatedAt, article.slug],
-      );
-    } else {
+  async insertArticle(article) {
+    await this.runWrite(() => {
       this.database.run(
         `INSERT INTO articles (slug, filename, markdown, html, source, date_added, updated_at)
-         VALUES (?, ?, ?, ?, 'upload', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           article.slug,
           article.filename,
           article.markdown,
           article.html,
+          article.source,
           article.dateAdded,
           article.updatedAt,
         ],
       );
-    }
-    this.persist();
+    });
+  }
+
+  /**
+   * @param {{ slug: string, filename: string, markdown: string, html: string, source: string, dateAdded: number, updatedAt: number }} article
+   * @returns {Promise<void>}
+   */
+  async updateArticle(article) {
+    await this.runWrite(() => {
+      this.database.run(
+        `UPDATE articles
+         SET filename = ?, markdown = ?, html = ?, source = ?, updated_at = ?
+         WHERE slug = ?`,
+        [
+          article.filename,
+          article.markdown,
+          article.html,
+          article.source,
+          article.updatedAt,
+          article.slug,
+        ],
+      );
+    });
+  }
+
+  /**
+   * @param {{ slug: string, filename: string, markdown: string, html: string, dateAdded: number, updatedAt: number }} article
+   * @returns {Promise<void>}
+   */
+  async upsertUpload(article) {
+    await this.runWrite(() => {
+      const existing = this.findBySlug(article.slug);
+      if (existing) {
+        this.database.run(
+          `UPDATE articles
+           SET filename = ?, markdown = ?, html = ?, source = 'upload', updated_at = ?
+           WHERE slug = ?`,
+          [article.filename, article.markdown, article.html, article.updatedAt, article.slug],
+        );
+      } else {
+        this.database.run(
+          `INSERT INTO articles (slug, filename, markdown, html, source, date_added, updated_at)
+           VALUES (?, ?, ?, ?, 'upload', ?, ?)`,
+          [
+            article.slug,
+            article.filename,
+            article.markdown,
+            article.html,
+            article.dateAdded,
+            article.updatedAt,
+          ],
+        );
+      }
+    });
   }
 
   /**
@@ -220,20 +226,24 @@ class ArticleRepository {
 
   /**
    * @param {string} slug - Article slug
-   * @returns {{ changes: number }}
+   * @returns {Promise<{ changes: number }>}
    */
-  deleteBySlug(slug) {
-    this.database.run('DELETE FROM articles WHERE slug = ?', [slug]);
-    const changes = this.database.getRowsModified();
-    this.persist();
+  async deleteBySlug(slug) {
+    let changes = 0;
+    await this.runWrite(() => {
+      this.database.run('DELETE FROM articles WHERE slug = ?', [slug]);
+      changes = this.database.getRowsModified();
+    });
     return { changes };
   }
 
-  /** @returns {{ changes: number }} */
-  deleteAll() {
-    this.database.run('DELETE FROM articles');
-    const changes = this.database.getRowsModified();
-    this.persist();
+  /** @returns {Promise<{ changes: number }>} */
+  async deleteAll() {
+    let changes = 0;
+    await this.runWrite(() => {
+      this.database.run('DELETE FROM articles');
+      changes = this.database.getRowsModified();
+    });
     return { changes };
   }
 

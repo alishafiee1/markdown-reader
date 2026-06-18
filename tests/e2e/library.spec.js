@@ -1,7 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
-const { skipWelcome, openLibrary } = require('./helpers');
+const { skipWelcome, openLibrary, SAMPLE_DOC_PATH } = require('./helpers');
 
 test.describe('Library — browse and open book', () => {
   test.beforeEach(async ({ page }) => {
@@ -35,16 +35,16 @@ test.describe('Library — browse and open book', () => {
   });
 
   test('deep link opens reader directly', async ({ page }) => {
-    await page.goto('/?path=write-docs-friendly/readme.md');
+    await page.goto(`/?path=${encodeURIComponent(SAMPLE_DOC_PATH)}`);
     await page.locator('[data-page="reader"].active').waitFor({ state: 'visible' });
     await expect(page.locator('#readerTitle')).not.toHaveText('مطالعه');
   });
 
   test('back from reader returns to same folder', async ({ page }) => {
-    await page.goto('/?path=write-docs-friendly/readme.md');
+    await page.goto(`/?path=${encodeURIComponent(SAMPLE_DOC_PATH)}`);
     await page.locator('#readerContent').waitFor({ state: 'visible' });
     await page.locator('#readerBackBtn').click();
     await page.locator('[data-page="library"].active').waitFor({ state: 'visible' });
-    await expect(page.locator('#libraryBreadcrumbs')).toContainText('write-docs-friendly');
+    await expect(page.locator('#libraryBreadcrumbs')).toContainText('00-start-new-project');
   });
 });
