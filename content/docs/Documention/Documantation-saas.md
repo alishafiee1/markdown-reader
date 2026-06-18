@@ -136,7 +136,7 @@ input.task-list-item-checkbox {
 | `admin-panel.md` | وقتی پنل ادمین داری |
 | `data-models.md` | وقتی schema/entityهای مهم داری |
 | `integrations.md` | وقتی به سرویس‌های بیرونی وصل هستی |
-| `architecture-and-structure.md` | از `saas-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `saas-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 | `notifications.md` | وقتی email/SMS/in-app/push/event داری |
 | `workflows.md` | وقتی featureها چندمرحله‌ای یا event-driven هستند |
 | `user-experience.md` | وقتی UX محصول اهمیت بالایی دارد |
@@ -160,7 +160,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -521,7 +521,7 @@ AI باید سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | آدرس محیط‌ها، panelها، providerها، دسترسی‌ها |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `pricing-notes.md` | یادداشت‌های pricing/plan و ایده‌های آزمایشی |
 | `customer-feedback.md` | بازخوردهای خام مشتری |
 | `incident-notes.md` | رخدادهای واقعی یا failureهای محصول |

@@ -89,7 +89,7 @@ async function runBookshelfTests() {
     assert.strictEqual(browseRoot.status, 200);
     assert.ok(Array.isArray(browseRoot.body.folders));
 
-    const docPath = '00-start-new-project/readme.md';
+    const docPath = 'write-docs-friendly/readme.md';
     const doc = await requestServer(server, 'GET', `/api/doc?path=${encodeURIComponent(docPath)}`);
     assert.strictEqual(doc.status, 200);
     assert.ok(String(doc.body.html).includes('<'));

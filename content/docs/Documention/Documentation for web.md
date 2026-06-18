@@ -137,7 +137,7 @@ input.task-list-item-checkbox {
 | `decision-log.md` | وقتی تصمیم‌های معماری زیاد و برگشت‌ناپذیر هستند |
 | `roles-and-permissions.md` | وقتی چند نقش کاربری وجود دارد |
 | `integrations.md` | وقتی پروژه به سرویس‌های بیرونی وصل است |
-| `architecture-and-structure.md` | از `web-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `web-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -149,7 +149,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -424,7 +424,7 @@ input.task-list-item-checkbox {
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | اطلاعات محیط فعلی، دامنه، سرور، آدرس‌ها، پنل‌ها |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `pending-decisions.md` | تصمیم‌های باز و unresolved |
 | `release-notes-local.md` | یادداشت‌های release شخصی |
 | `contacts.md` | دسترسی‌ها یا اشخاص مرتبط اگر لازم باشد |

@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * مودال ویرایش جلد --- admin book cover edit modal ---
@@ -109,3 +110,4 @@ function initAdminModal() {
 }
 
 window.BookShelfAdminModal = { initAdminModal, open, close: closeModal };
+})();

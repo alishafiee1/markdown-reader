@@ -12,13 +12,15 @@ npm install
 npm start
 ```
 
-مرورگر: `http://127.0.0.1:4001/`
+مرورگر: `http://127.0.0.1:4002/`
+
+توقف: `Ctrl+C` در ترمینال، یا `npm run stop` برای آزاد کردن پورت.
 
 ## متغیرهای محیط
 
 | متغیر | پیش‌فرض | توضیح |
 |--------|---------|--------|
-| `PORT` | `4001` | پورت HTTP |
+| `PORT` | `4002` | پورت HTTP |
 | `HOST` | `0.0.0.0` | آدرس bind — برای LAN از `0.0.0.0` استفاده کن |
 | `MARKDOWN_READER_DB` | `data/articles.db` | مسیر فایل SQLite |
 | `ADMIN_SEED_PASSWORD` | `admino` | رمز اولیهٔ ادمین `admino` (در production عوض کن) |
@@ -36,7 +38,7 @@ npm start
 راهنمای کامل: [`docs/server-deploy.md`](docs/server-deploy.md)
 
 ```bash
-PORT=4001 HOST=0.0.0.0 npm start
+PORT=4002 HOST=0.0.0.0 npm start
 ```
 
 ## API (BookShelf)
@@ -62,10 +64,16 @@ $env:MD_READER_RUN_TESTS = "1"
 npm test
 ```
 
+تست E2E با Playwright (مرورگر واقعی):
+
+```powershell
+npm run test:e2e
+```
+
 اسموک:
 
 ```powershell
-curl http://localhost:4001/api/browse
+curl http://localhost:4002/api/browse
 ```
 
 ## داکیومنت پروژه

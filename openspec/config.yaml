@@ -5,7 +5,7 @@ context: |
   Tech stack: Node 18+, Express, sql.js (SQLite in-process), marked, multer.
   Frontend: vanilla JS in public/ — no React.
   Content source of truth: content/docs/ on disk; DB stores users, metadata, progress only.
-  Defaults: PORT=4001, HOST=0.0.0.0 for LAN access.
+  Defaults: PORT=4002, HOST=0.0.0.0 for LAN access.
   Human docs (FA): docs/change/bookshelf-reader/
   AI compact map: docs-for-ai/change/bookshelf-reader.md
 

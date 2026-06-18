@@ -1,8 +1,5 @@
-'use strict';
-
-/**
- * نقطه ورود اپ --- bootstrap BookShelf SPA ---
- */
+(function () {
+  'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
   const { icon } = window.BookShelfIcons;
@@ -41,3 +38,4 @@ document.addEventListener('DOMContentLoaded', () => {
   window.BookShelfAdminModal.initAdminModal();
   window.BookShelfRouter.initRoute();
 });
+})();

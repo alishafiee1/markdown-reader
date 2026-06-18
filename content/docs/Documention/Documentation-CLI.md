@@ -145,7 +145,7 @@ input.task-list-item-checkbox {
 | `desktop-ui.md` | وقتی ابزار desktop GUI هم دارد |
 | `shortcuts-and-workflows.md` | وقتی جریان کار روزمره مهم است |
 | `distribution.md` | وقتی install/update/uninstall strategy مهم است |
-| `architecture-and-structure.md` | از `tool-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `tool-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -157,7 +157,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -478,7 +478,7 @@ AI باید سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | pathهای محلی، shell profile، package manager noteها، تست محلی |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `local-shortcuts.md` | aliasها، scriptهای شخصی، wrapperهای محلی |
 | `release-notes-local.md` | یادداشت‌های release و publish |
 | `secrets-and-tokens.md` | فقط در صورت اجبار و فقط local |

@@ -138,7 +138,7 @@ design عوض شد → اول design، بعد tasks و ui-behavior.
 ## رابطه با بقیهٔ داک‌ها
 
 ```
-00-start-new-project/     ← چطور بنویسیم (این پوشه)
+write-docs-friendly/     ← چطور بنویسیم (این پوشه)
 Documention/              ← جزئیات هر نوع پروژه
 docs/                     ← انسان‌ها
 docs-for-ai/              ← AI

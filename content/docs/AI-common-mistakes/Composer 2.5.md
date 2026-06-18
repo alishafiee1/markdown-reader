@@ -74,6 +74,6 @@ input.task-list-item-checkbox {
 
 ### [DOC-001] داک `docs/` تلگرافی با جدول زیاد
 - **اشتباه:** شروع با §۱ و جدول «نقش|نیاز» · bullet «ریسک: X — mitigation: Y» · چک‌لیست spec
-- **درست:** داستان محور مثل `folder-card-management/proposal` · پاراگراف خودمونی · جدول حداقل — مرجع: `00-start-new-project/how-to-write-proposal.md` بخش «وقتی AI می‌نویسد»
+- **درست:** داستان محور مثل `folder-card-management/proposal` · پاراگراف خودمونی · جدول حداقل — مرجع: `write-docs-friendly/how-to-write-proposal.md` بخش «وقتی AI می‌نویسد»
 - **زمینه:** docs · new-change · card-view
 

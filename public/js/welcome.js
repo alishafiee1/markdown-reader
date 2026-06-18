@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * صفحه خوش‌آمد --- first-visit welcome screen ---
@@ -21,3 +22,4 @@ function initWelcome() {
 }
 
 window.BookShelfWelcome = { initWelcome };
+})();

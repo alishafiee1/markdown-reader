@@ -145,7 +145,7 @@ input.task-list-item-checkbox {
 | `change-log.md` | وقتی تغییرات عملیاتی باید track شوند |
 | `openwrt-notes.md` | وقتی edge/router/OpenWRT بخشی از پروژه است |
 | `proxy-and-tunnels.md` | وقتی VLESS/WG/WS/TLS/tunnel/proxy panel داری |
-| `architecture-and-structure.md` | از `infra-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `infra-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -157,7 +157,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -515,7 +515,7 @@ AI باید خیلی سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | IP واقعی، SSH path، tunnel path، provider panel، host note |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `access-notes.md` | دسترسی‌ها، userها، نقش‌ها، panelها |
 | `incident-notes.md` | رخدادهای واقعی و تجربه recovery |
 | `secrets-and-credentials.md` | فقط در صورت اجبار و فقط local |

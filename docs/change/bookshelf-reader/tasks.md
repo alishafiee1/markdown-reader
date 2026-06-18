@@ -16,7 +16,7 @@
 
 - [ ] ۰.۱ schema جدید: `users`, `sessions`, `user_preferences`, `book_metadata`, `reading_progress` در `db/schema.sql`
 - [ ] ۰.۲ migration/init: اگر DB نبود بساز؛ seed ادمین `admino` با hash امن (رمز اولیه طبق design)
-- [ ] ۰.۳ `server.js`: `PORT` پیش‌فرض **4001** برای production؛ bind `0.0.0.0` وقتی `NODE_ENV=production` یا `HOST=0.0.0.0`
+- [ ] ۰.۳ `server.js`: `PORT` پیش‌فرض **4002** برای production؛ bind `0.0.0.0` وقتی `NODE_ENV=production` یا `HOST=0.0.0.0`
 - [ ] ۰.۴ سرویس `browse-tree.js`: لیست امن یک سطح از `content/docs`
 - [ ] ۰.۵ تست خودکار: path با `..` → 400
 - [ ] ۰.۶ **تموم شدن فاز:** `GET /api/browse` ریشه لیست پوشه‌ها را برمی‌گرداند
@@ -32,7 +32,7 @@
 - [ ] ۱.۳ UI کتابخانه: breadcrumb، grid پوشه/کارت کتاب
 - [ ] ۱.۴ کلیک کتاب → صفحهٔ مطالعه؛ بازگشت breadcrumb درست
 - [ ] ۱.۵ URL با `?path=` برای deep link
-- [ ] ۱.۶ تست E2E دستی: `content/docs/00-start-new-project/readme.md` باز و نمایش داده شود
+- [ ] ۱.۶ تست E2E دستی: `content/docs/write-docs-friendly/readme.md` باز و نمایش داده شود
 - [ ] ۱.۷ **تموم شدن فاز:** مرور زیرپوشه‌ها مثل اکسپلورر کار کند
 
 ---
@@ -94,11 +94,11 @@
 ## فاز ۶ — Deploy، تست، مستندات
 
 - [ ] ۶.۱ به‌روز `README.md` و [`docs/server-deploy.md`](../../server-deploy.md)
-- [ ] ۶.۲ فایل `.env.example` با PORT=4001
+- [ ] ۶.۲ فایل `.env.example` با PORT=4002
 - [ ] ۶.۳ تست API با `MD_READER_RUN_TESTS=1` — browse, auth, progress
-- [ ] ۶.۴ smoke: `curl http://localhost:4001/api/browse`
+- [ ] ۶.۴ smoke: `curl http://localhost:4002/api/browse`
 - [ ] ۶.۵ حذف UI قدیمی drawer/apload عمومی (طبق proposal)
-- [ ] ۶.۶ **تموم شدن فاز:** روی سرور `192.168.88.50:4001` قابل دسترس
+- [ ] ۶.۶ **تموم شدن فاز:** روی سرور `192.168.88.50:4002` قابل دسترس
 
 ---
 

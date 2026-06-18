@@ -12,7 +12,7 @@ The current markdown reader works but only shows a flat first-level folder list 
 - Add **library search** (title/description/filename) and **in-document search** with highlight
 - Add new SQLite tables: `users`, `sessions`, `user_preferences`, `book_metadata`, `reading_progress`
 - **BREAKING**: Replace legacy flat sidebar/drawer UI and first-level-only sync with explorer-based browse API
-- Default server: `PORT=4001`, `HOST=0.0.0.0` for LAN access
+- Default server: `PORT=4002`, `HOST=0.0.0.0` for LAN access
 
 ## Capabilities
 

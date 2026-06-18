@@ -5,7 +5,7 @@
 
 ## Project context
 
-Standalone Node app — **no CMS/module packaging** in this repo. Deploy: `docs/server-deploy.md` (port 4001, HOST 0.0.0.0).
+Standalone Node app — **no CMS/module packaging** in this repo. Deploy: `docs/server-deploy.md` (port 4002, HOST 0.0.0.0).
 
 ## Goal
 
@@ -40,7 +40,7 @@ Replace flat article list with **folder explorer** over `content/docs`, **BookSh
 
 ## Server defaults
 
-- `PORT=4001`, `HOST=0.0.0.0`
+- `PORT=4002`, `HOST=0.0.0.0`
 - Path traversal blocked on all `path` params
 
 ## UI pages

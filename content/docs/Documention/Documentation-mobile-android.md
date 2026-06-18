@@ -147,7 +147,7 @@ input.task-list-item-checkbox {
 | `security.md` | وقتی token، local secret، certificate pinning، secure storage مهم است |
 | `testing.md` | وقتی UI test/unit/integration مهم است |
 | `troubleshooting.md` | وقتی setup/build/runtime issue زیاد است |
-| `architecture-and-structure.md` | از `mobile-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `mobile-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -159,7 +159,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -520,7 +520,7 @@ AI باید سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | دستگاه‌های تست، keystore path، panelها، env noteها |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `device-test-notes.md` | تفاوت رفتار روی deviceهای مختلف |
 | `release-notes-local.md` | یادداشت‌های release و rollout شخصی |
 | `secrets-and-signing.md` | فقط در صورت اجبار و فقط local |

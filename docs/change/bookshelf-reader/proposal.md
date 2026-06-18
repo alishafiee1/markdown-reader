@@ -4,7 +4,7 @@
 
 > پوشه: `docs/change/bookshelf-reader/`  
 > طراحی سیستم: [design.md](./design.md) · رفتار صفحه: [ui-behavior.md](./ui-behavior.md) · تم‌های مطالعه: [reading-themes-guide.md](./reading-themes-guide.md)  
-> راهنمای نگارش: [how-to-write-proposal.md](../../../../AI learning docs/00-start-new-project/how-to-write-proposal.md)
+> راهنمای نگارش: [how-to-write-proposal.md](../../../../AI learning docs/write-docs-friendly/how-to-write-proposal.md)
 
 **یک خط:** می‌خواهیم همان داکیومنت‌های آموزشی داخل پوشهٔ محتوا را مثل یک اپ کتاب‌خوانی تاریک و مدرن — با مرور پوشه، جستجو، چهار حالت نور مطالعه و ادامهٔ خواندن از همان جا — در مرورگر (موبایل، تبلت و دسکتاپ) در دسترس بگذاریم؛ بدون اجبار به ورود، ولی با امکان ثبت‌نام برای کسانی که می‌خواهند تم و سه کتاب آخرشان روی حسابشان بماند.
 

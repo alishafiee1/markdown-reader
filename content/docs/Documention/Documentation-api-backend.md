@@ -141,7 +141,7 @@ input.task-list-item-checkbox {
 | `roles-and-permissions.md` | وقتی چند سطح دسترسی داری |
 | `error-handling.md` | وقتی format خطا و status code مهم است |
 | `decision-log.md` | وقتی تصمیم‌های معماری مهم و قابل رجوع وجود دارد |
-| `architecture-and-structure.md` | از `api-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `api-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -153,7 +153,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -478,7 +478,7 @@ AI باید سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | آدرس سرور، panel، port، systemd/docker service name، domain |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `local-ops-notes.md` | نکات عملیاتی محلی |
 | `secrets-and-access.md` | فقط در صورت اجبار و فقط local |
 | `incident-notes.md` | خطاهای واقعی production یا staging |

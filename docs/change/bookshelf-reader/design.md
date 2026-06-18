@@ -4,7 +4,7 @@
 
 > پوشه: `docs/change/bookshelf-reader/`  
 > چرا: [proposal.md](./proposal.md) · ظاهر صفحه: [ui-behavior.md](./ui-behavior.md) · تم‌های مطالعه: [reading-themes-guide.md](./reading-themes-guide.md)  
-> راهنمای نگارش: [how-to-write-design.md](../../../../AI learning docs/00-start-new-project/how-to-write-design.md)
+> راهنمای نگارش: [how-to-write-design.md](../../../../AI learning docs/write-docs-friendly/how-to-write-design.md)
 
 **یک خط:** توضیح می‌دهد محتوا از پوشهٔ داکیومنت چطور به درخت پوشه، صفحهٔ مطالعه، پایگاه داده و حساب کاربری وصل می‌شود — منطق و مسیر، نه رنگ دکمه و نه نام فایل در کد.
 

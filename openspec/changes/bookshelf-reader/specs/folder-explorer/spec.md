@@ -42,5 +42,5 @@ The library and reader SHALL support URL query `?path=` so a book can be opened 
 
 #### Scenario: Direct link opens book
 
-- **WHEN** user opens the app with `?path=00-start-new-project/readme.md`
+- **WHEN** user opens the app with `?path=write-docs-friendly/readme.md`
 - **THEN** the reader page loads that document

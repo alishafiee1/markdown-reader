@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * صفحه مطالعه --- reader themes, fullscreen, progress, scroll save ---
@@ -135,6 +136,7 @@ function updateScrollProgress() {
 function toggleFullscreen() {
   isFullscreen = !isFullscreen;
   document.getElementById('app').classList.toggle('reader-fullscreen', isFullscreen);
+  document.body.classList.toggle('reader-fullscreen', isFullscreen);
 }
 
 /**
@@ -290,3 +292,4 @@ function setFontScale(scale) {
 }
 
 window.BookShelfReader = { initReader, open };
+})();

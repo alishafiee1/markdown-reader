@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * جستجوی درون‌سند --- in-document search with highlight ---
@@ -126,3 +127,4 @@ window.BookShelfReaderSearch = {
     return searchState;
   },
 };
+})();

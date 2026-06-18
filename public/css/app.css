@@ -41,6 +41,16 @@ textarea {
   display: block;
 }
 
+.page.welcome-page.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--nav-height));
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
 .page-header {
   margin-bottom: 1.25rem;
 }
@@ -137,9 +147,11 @@ textarea {
   height: 22px;
 }
 
-#app.reader-fullscreen .bottom-nav,
 #app.reader-fullscreen .reader-toolbar,
-#app.reader-fullscreen .reader-topbar {
+#app.reader-fullscreen .reader-topbar,
+body.reader-fullscreen .bottom-nav,
+body.reader-fullscreen .reader-toolbar,
+body.reader-fullscreen .reader-topbar {
   display: none !important;
 }
 
@@ -363,16 +375,6 @@ body.is-admin .admin-edit-btn {
 
 .breadcrumbs span.sep {
   color: var(--text-muted);
-}
-
-.welcome-page {
-  min-height: calc(100vh - var(--nav-height));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem 1.5rem;
 }
 
 .welcome-collage {

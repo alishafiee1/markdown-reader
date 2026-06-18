@@ -4,7 +4,7 @@
 
 - [x] 1.1 Add new tables in `db/schema.sql`: `users`, `sessions`, `user_preferences`, `book_metadata`, `reading_progress`
 - [x] 1.2 Update `db/database.js` init: create DB if missing, seed admin `admino` with bcrypt hash
-- [x] 1.3 Update `server.js`: default `PORT=4001`, bind `0.0.0.0` when `NODE_ENV=production` or `HOST=0.0.0.0`
+- [x] 1.3 Update `server.js`: default `PORT=4002`, bind `0.0.0.0` when `NODE_ENV=production` or `HOST=0.0.0.0`
 - [x] 1.4 Create `services/browse-tree.js`: safe one-level listing from `content/docs`
 - [x] 1.5 Create `routes/browse.js` with `GET /api/browse`; wire in `server.js`
 - [x] 1.6 Add test in `tests/`: path with `..` returns 400
@@ -19,7 +19,7 @@
 - [x] 2.3 Build library UI in `public/js/library.js`: breadcrumb, folder/book grid
 - [x] 2.4 Wire book click → reader page; back returns to same folder
 - [x] 2.5 Support deep link `?path=` in `public/js/router.js` or `app.js`
-- [x] 2.6 Manual E2E: open `content/docs/00-start-new-project/readme.md` and verify render
+- [x] 2.6 Manual E2E: open `content/docs/write-docs-friendly/readme.md` and verify render
 - [x] 2.7 **Phase done:** subfolder navigation works like file explorer
 
 ## 3. BookShelf UI and reading themes (Phase 2)
@@ -71,11 +71,11 @@
 ## 7. Deploy, tests, cleanup (Phase 6)
 
 - [x] 7.1 Update `README.md` and `docs/server-deploy.md`
-- [x] 7.2 Update `.env.example` with `PORT=4001`, `HOST=0.0.0.0`
+- [x] 7.2 Update `.env.example` with `PORT=4002`, `HOST=0.0.0.0`
 - [x] 7.3 Extend `tests/` with browse, auth, progress cases (`MD_READER_RUN_TESTS=1`)
-- [x] 7.4 Smoke: `curl http://localhost:4001/api/browse`
+- [x] 7.4 Smoke: `curl http://localhost:4002/api/browse`
 - [x] 7.5 Remove legacy drawer/upload UI from `public/`
-- [x] 7.6 **Phase done:** reachable at `192.168.x.x:4001` on LAN
+- [x] 7.6 **Phase done:** reachable at `192.168.x.x:4002` on LAN
 
 ## Priority if time is limited
 

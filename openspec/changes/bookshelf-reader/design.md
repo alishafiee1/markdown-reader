@@ -14,7 +14,7 @@ Reading theme tokens (FA): `docs/change/bookshelf-reader/reading-themes-guide.md
 - Optional auth: theme + last 3 books with scroll position on server
 - Admin: edit title, description, color cover, or upload image (max 2MB)
 - Library search on title/description/filename; responsive web (375px–desktop)
-- Deploy on port 4001, bind `0.0.0.0` for LAN access
+- Deploy on port 4002, bind `0.0.0.0` for LAN access
 
 **Non-Goals:**
 

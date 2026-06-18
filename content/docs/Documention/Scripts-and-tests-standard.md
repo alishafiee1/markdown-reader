@@ -4,7 +4,7 @@
 
 > این سند **مشترک** بین وب، سرور/DevOps، CLI، IoT و SaaS است.  
 > جزئیات نوع پروژه: [`Documentation-server-devOps.md`](./Documentation-server-devOps.md) · [`Documentation-CLI.md`](./Documentation-CLI.md) · [`Documentation for web.md`](./Documentation%20for%20web.md)  
-> راهنمای عملی کوتاه: [`00-start-new-project/how-to-standardize-scripts-and-tests.md`](../00-start-new-project/how-to-standardize-scripts-and-tests.md)
+> راهنمای عملی کوتاه: [`write-docs-friendly/how-to-standardize-scripts-and-tests.md`](../write-docs-friendly/how-to-standardize-scripts-and-tests.md)
 
 ---
 
@@ -297,8 +297,8 @@ python3 scripts/run_server_checks.py
 
 ## لینک‌های مرتبط
 
-- [documentation-structure-map.md](../00-start-new-project/documentation-structure-map.md)
-- [how-to-standardize-scripts-and-tests.md](../00-start-new-project/how-to-standardize-scripts-and-tests.md)
+- [documentation-structure-map.md](../write-docs-friendly/documentation-structure-map.md)
+- [how-to-standardize-scripts-and-tests.md](../write-docs-friendly/how-to-standardize-scripts-and-tests.md)
 - [Documentation-server-devOps.md](./Documentation-server-devOps.md) — `runbooks.md`، `how-to-use.md`
 - [Documentation-CLI.md](./Documentation-CLI.md) — `commands.md`، `testing.md`
 

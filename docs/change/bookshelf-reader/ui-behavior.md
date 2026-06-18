@@ -4,7 +4,7 @@
 
 > پوشه: `docs/change/bookshelf-reader/`  
 > منطق سیستم: [design.md](./design.md) · تم‌های مطالعه (رنگ و فونت کارت کتاب): [reading-themes-guide.md](./reading-themes-guide.md)  
-> راهنمای نگارش: [how-to-write-ui-ux-behavior.md](../../../../AI learning docs/00-start-new-project/how-to-write-ui-ux-behavior.md)
+> راهنمای نگارش: [how-to-write-ui-ux-behavior.md](../../../../AI learning docs/write-docs-friendly/how-to-write-ui-ux-behavior.md)
 
 **یک خط:** از اولین بازدید در موبایل، تبلت یا دسکتاپ تا مطالعهٔ تمام‌صفحه — دقیقاً چه می‌بینی، روی چه می‌زنی، و در حالت بارگذاری، خالی، خطا یا موفقیت چه پیامی می‌خوانی.
 

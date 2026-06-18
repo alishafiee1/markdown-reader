@@ -140,7 +140,7 @@ input.task-list-item-checkbox {
 | `board-revisions.md` | وقتی چند revision سخت‌افزاری وجود دارد |
 | `cloud-integration.md` | وقتی firmware به server/cloud/app متصل است |
 | `manufacturing-notes.md` | وقتی پروژه از prototype به production نزدیک می‌شود |
-| `architecture-and-structure.md` | از `fw-standard` به بالا — `00-start-new-project/how-to-write-architecture-and-structure.md` |
+| `architecture-and-structure.md` | از `fw-standard` به بالا — `write-docs-friendly/how-to-write-architecture-and-structure.md` |
 
 ---
 
@@ -152,7 +152,7 @@ input.task-list-item-checkbox {
 | `docs/change/1405-03-01-<name>/` | تمام‌شده — پیشوند تاریخ شمسی روز اتمام |
 | `docs/archive/` | معلق، ردشده، داک منسوخ |
 
-راهنما: `00-start-new-project/how-to-manage-change-folders.md`
+راهنما: `write-docs-friendly/how-to-manage-change-folders.md`
 
 ---
 
@@ -504,7 +504,7 @@ AI باید خیلی سریع بفهمد:
 | نام فایل | هدف |
 |----------|-----|
 | `current-platform.md` | پورت‌ها، سیستم عامل bench، مسیر toolchain، آدرس پنل cloud، deviceهای موجود |
-| `walkthrough.md` | گزارش جلسات — قالب: `00-start-new-project/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
+| `walkthrough.md` | گزارش جلسات — قالب: `write-docs-friendly/how-to-write-walkthrough.md`؛ مبنای بازه `/sync-docs` |
 | `device-inventory.md` | لیست بردها، MAC، serial، revision، وضعیت |
 | `bench-notes.md` | تست‌های عملی، مشاهدات، رفتار عجیب |
 | `wifi-and-secrets.md` | فقط در صورت اجبار و فقط local |

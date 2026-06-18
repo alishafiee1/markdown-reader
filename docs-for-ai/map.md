@@ -5,7 +5,7 @@ Standalone Node web app. **Not** a CMS module. No zip/build scripts.
 
 ## Entry
 
-- `server.js` — Express, `PORT` default 4001, `HOST` default 0.0.0.0
+- `server.js` — Express, `PORT` default 4002, `HOST` default 0.0.0.0
 - `npm start` / `npm test` (`MD_READER_RUN_TESTS=1`)
 
 ## Layout

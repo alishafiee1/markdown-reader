@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node tests/test_bookshelf_api.js && node tests/test_articles_api.js"
+    "stop": "node scripts/free-port.js",
+    "test": "node tests/test_bookshelf_api.js && node tests/test_articles_api.js",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "engines": {
     "node": ">=18"
@@ -17,5 +20,8 @@
     "marked": "15.0.7",
     "multer": "1.4.5-lts.2",
     "sql.js": "1.13.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }

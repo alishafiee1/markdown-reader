@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * صفحه حساب --- login, register, logout ---
@@ -54,6 +55,14 @@ function renderLoggedOut() {
   if (banner) {
     banner.hidden = true;
   }
+  const loginPanel = document.getElementById('loginPanel');
+  const registerPanel = document.getElementById('registerPanel');
+  if (loginPanel) {
+    loginPanel.hidden = false;
+  }
+  if (registerPanel) {
+    registerPanel.hidden = true;
+  }
   document.body.classList.remove('is-admin');
 }
 
@@ -96,6 +105,9 @@ async function handleRegister(event) {
   event.preventDefault();
   const form = event.target;
   const errorEl = document.getElementById('registerError');
+  if (errorEl) {
+    errorEl.textContent = '';
+  }
   try {
     const user = await apiRequest('/auth/register', {
       method: 'POST',
@@ -106,7 +118,12 @@ async function handleRegister(event) {
     });
     currentUser = user;
     renderLoggedIn(user);
+    document.getElementById('registerPanel').hidden = true;
+    document.getElementById('loginPanel').hidden = true;
     showToast('ثبت‌نام موفق');
+    if (window.BookShelfHome) {
+      window.BookShelfHome.refresh();
+    }
   } catch (error) {
     if (errorEl) {
       errorEl.textContent = error.message;
@@ -133,10 +150,12 @@ function initAccount() {
   document.getElementById('registerForm')?.addEventListener('submit', handleRegister);
   document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
   document.getElementById('showRegisterBtn')?.addEventListener('click', () => {
+    document.getElementById('loginError').textContent = '';
     document.getElementById('loginPanel').hidden = true;
     document.getElementById('registerPanel').hidden = false;
   });
   document.getElementById('showLoginBtn')?.addEventListener('click', () => {
+    document.getElementById('registerError').textContent = '';
     document.getElementById('registerPanel').hidden = true;
     document.getElementById('loginPanel').hidden = false;
   });
@@ -144,3 +163,4 @@ function initAccount() {
 }
 
 window.BookShelfAccount = { initAccount, refreshAccount, get currentUser() { return currentUser; } };
+})();

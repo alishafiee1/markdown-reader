@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * صفحه خانه --- search, categories, continue reading ---
@@ -181,3 +182,4 @@ function initHome() {
 }
 
 window.BookShelfHome = { initHome, refresh };
+})();

@@ -13,9 +13,10 @@ const { createSearchRouter } = require('./routes/search');
 const { createSessionMiddleware } = require('./middleware/session');
 const { syncBundleContent } = require('./services/content-sync');
 const { syncMetadataIndex } = require('./services/sync-index');
+const { registerGracefulShutdown } = require('./lib/graceful-shutdown');
 
 const MODULE_ROOT = __dirname;
-const DEFAULT_PORT = 4001;
+const DEFAULT_PORT = 4002;
 const DATABASE_PATH = path.join(MODULE_ROOT, 'data', 'articles.db');
 const CONTENT_DOCS_DIRECTORY = path.join(MODULE_ROOT, 'content', 'docs');
 const COVERS_DIRECTORY = path.join(MODULE_ROOT, 'data', 'covers');
@@ -102,10 +103,11 @@ const listenHost = resolveListenHost();
 if (require.main === module) {
   createApplication()
     .then(({ app: expressApp }) => {
-      expressApp.listen(listenPort, listenHost, () => {
+      const httpServer = expressApp.listen(listenPort, listenHost, () => {
         // eslint-disable-next-line no-console -- server bootstrap log
         console.log(`markdown-reader listening on ${listenHost}:${listenPort}`);
       });
+      registerGracefulShutdown(httpServer);
     })
     .catch((error) => {
       console.error('Failed to start markdown-reader-module:', error);
@@ -114,6 +116,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  DEFAULT_PORT,
   createApplication,
   get app() {
     if (!app) {

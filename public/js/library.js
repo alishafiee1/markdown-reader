@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * صفحه کتابخانه --- breadcrumb folder explorer grid ---
@@ -122,3 +123,4 @@ function initLibrary() {
 }
 
 window.BookShelfLibrary = { initLibrary, open };
+})();
